@@ -1,0 +1,360 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "SF Shopping Cart API Documentation",
+        "description": "This Swagger page is intended to expose the docuemntation for the different endpoints inside thi API.",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Users",
+            "description": "API for users in the system"
+        },
+        {
+            "name": "Shopping Cart",
+            "description": "endpoints to store the available products"
+        },
+        {
+            "name": "Product Details",
+            "description": ""
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/api/auth/signup": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Register a new User",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "User info to be registered",
+                        "schema": {
+                            "$ref": "#/definitions/UserRegister"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New user is created",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shopping_cart": {
+            "get": {
+                "tags": [
+                    "Shopping Cart"
+                ],
+                "description": "Get all the products of the current user logged",
+                "parameters": [],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CartList"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Shopping Cart"
+                ],
+                "description": "Add product to cart",
+                "parameters": [
+                    {
+                        "name": "cart",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/CreateCart"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/product_details": {
+            "get": {
+                "tags": [
+                    "Product Details"
+                ],
+                "description": "Product details list",
+                "parameters": [],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/ProductDetails"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/shopping_cart": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Login user and return token",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "User created",
+                        "schema": {
+                            "$ref": "#/definitions/UserLogin"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "You are successfully logged in!",
+                        "schema": {
+                            "$ref": "#/definitions/LoginResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Response": {
+            "properties": {
+                "statusCode": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "LoginResponse": {
+            "properties": {
+                "statusCode": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "jwt": {
+                            "type": "string"
+                        },
+                        "expiresIn": {
+                            "type": "string"
+                        },
+                        "user": {
+                            "type": "object",
+                            "$ref": "#/definitions/UserLogin"
+                        }
+                    }
+                }
+            }
+        },
+        "UserRegister": {
+            "required": [
+                "username",
+                "email",
+                "password"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserLogin": {
+            "required": [
+                "user",
+                "password"
+            ],
+            "properties": {
+                "user": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Users": {
+            "type": "array",
+            "$ref": "#/definitions/User"
+        },
+        "CartList": {
+            "properties": {
+                "cart_id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "product_detail_id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "price": {
+                                "type": "integer"
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "regular_price": {
+                                "type": "integer"
+                            },
+                            "tax_rate": {
+                                "type": "integer"
+                            },
+                            "attributes": {
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "product_quantity": {
+                    "type": "integer"
+                },
+                "total_to_pay": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "CreateCart": {
+            "required": [
+                "cartDetails"
+            ],
+            "properties": {
+                "cartDetails": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "product_detail_id": {
+                                "type": "integer"
+                            },
+                            "quantity": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "ProductDetails": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "categoryId": {
+                        "type": "number"
+                    },
+                    "categoryName": {
+                        "type": "string"
+                    },
+                    "productId": {
+                        "type": "number"
+                    },
+                    "productName": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "taxRate": {
+                        "type": "number"
+                    },
+                    "stock": {
+                        "type": "number"
+                    },
+                    "attributes": {
+                        "type": "object"
+                    },
+                    "createdAt": {
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
